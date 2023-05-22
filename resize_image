@@ -1,4 +1,3 @@
-<?php
 $target_dir = "D:/1620517141.jpg";
 
 function resize_image($file, $w, $h, $crop=FALSE) {
@@ -29,4 +28,3 @@ function resize_image($file, $w, $h, $crop=FALSE) {
 }
 
 resize_image("D:/1620517141.jpg", 300, 300);
-?>
