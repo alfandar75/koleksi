@@ -1,0 +1,20 @@
+	// Menampilkan seluruh isi direktori/folder
+	function index()
+	{
+		// $tanggal = strtotime("12-05-2023 10:00:00");
+
+		$dir = "D:/Private";
+		$proses = new RecursiveDirectoryIterator("$dir");
+		$no = 0;
+		foreach (new RecursiveIteratorIterator($proses) as $file) {
+			$no++;
+			// $filemtime = filemtime($file);
+			$pathinfo = pathinfo($file);
+
+			if ($pathinfo["extension"] == "pdf") {
+				echo $no . ". " . str_replace("\\", "/", $file);
+				echo "<br />";
+			}
+		}
+
+	}
