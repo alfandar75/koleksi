@@ -1,5 +1,5 @@
 	// Menampilkan seluruh isi direktori/folder
-	function index()
+	function recursiveDirectoryIterator()
 	{
 		// $tanggal = strtotime("12-05-2023 10:00:00");
 
