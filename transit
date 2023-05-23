@@ -1,0 +1,156 @@
+  function index()
+  {
+		$id_bri = "528899";
+
+		$selek[] = "bri.id_mhs";
+		$selek[] = "CONCAT(DBS_PERIODE(bri.periode), ' (', bri.periode,')') AS periode";
+		$selek[] = "bri.tabel_sumber";
+		$selek[] = "DBS_BRIVA(bri.brivaNo, bri.custCode) AS briva";
+		$selek[] = "bri.setoran_ke";
+		$selek[] = "FORMAT(rek.amount, 0, 'de_DE') AS setoran";
+		$selek[] = "DATE_FORMAT(rek.paymentDate, '%d-%m-%Y %H:%i:%s') AS tanggal";
+		$selek[] = "bri.keterangan";
+
+		$sql = "SELECT " . join(",", $selek) . " FROM bank AS bri ";
+		$sql .= "INNER JOIN rekening_koran AS rek ON (bri.trxID = rek.trxID) ";
+		$sql .= "WHERE (bri.id = $id_bri) ";
+		$dta = $this->mikwa->query($sql)->row_array();
+
+		if ($dta) {
+			$id_mhs = $dta["id_mhs"];
+			$tabel_sumber = $dta["tabel_sumber"];
+
+			switch ($tabel_sumber) {
+				case 'calon_mahasiswa':
+					break;
+
+				default:
+					$sel[] = "mhs.nama AS nama_mahasiswa";
+					$sel[] = "mhs.nim";
+					$sel[] = "jur.prodi_singk AS prodi";
+
+					$sql = "SELECT " . join(",", $sel) . " FROM mahasiswa AS mhs ";
+					$sql .= "INNER JOIN jurusan AS jur ON (jur.id = mhs.jurusan) ";
+					$sql .= "WHERE (mhs.id = $id_mhs)";
+					$dta = array_merge($dta, $this->mikwa->query($sql)->row_array());
+					break;
+			}
+
+		}
+
+		// default
+		$font = "Arial";
+		$mt = 10; //topMargin
+		$ml = 20; //leftMargin
+		$b = 0; //border
+		$t = 6; //lineHeight
+
+		$pdf = new FPDF('l', 'mm', 'A5');
+		$pdf->SetTopMargin($mt);
+		$pdf->SetLeftMargin($ml);
+		$pdf->SetRightMargin($ml);
+		$pdf->AddPage();
+
+		// Kop
+		$url_logo = base_url() . "assets/images/logo.png";
+		$pdf->Image($url_logo, $ml, $mt, 21);
+		$pdf->SetFont($font, 'B', 13);
+		$pdf->MultiCell(0, 5, "BUKTI SETORAN LEWAT BRIVA", $b, "C");
+		$pdf->SetFont($font, 'B', 12);
+		$pdf->MultiCell(0, 5, "INSTITUT AGAMA ISLAM NEGERI PALANGKA RAYA", $b, "C");
+		$pdf->Cell(0, 2, '', '', 1);
+		$pdf->SetFont($font, '', 8);
+		$pdf->MultiCell(0, 3.5, "Jalan G. Obos Komplek Islamic Centre Palangka Raya, Kalimantan Tengah, 73112\nEmail: mikwa.iainpalangkaraya@gmail.com Website: https://mikwa.iainplk.ac.id.", $b, "C");
+
+		// Line atas
+		$pdf->Cell(0, 3, '', 'B', 1);
+
+		// Konten
+		$pdf->SetFont($font, '', 11);
+		$pdf->Cell(0, 5, '', '', 1);
+
+		$pdf->Cell(50, $t, 'Nama', $b, 0);
+		$pdf->Cell(5, $t, ':', $b, 0);
+		$pdf->Cell(0, $t, $dta["nama_mahasiswa"], $b, 1);
+
+		$pdf->Cell(50, $t, 'NIM', $b, 0);
+		$pdf->Cell(5, $t, ':', $b, 0);
+		$pdf->Cell(0, $t, $dta["nim"], $b, 1);
+
+		$pdf->Cell(50, $t, 'Program Studi', $b, 0);
+		$pdf->Cell(5, $t, ':', $b, 0);
+		$pdf->Cell(0, $t, $dta["prodi"], $b, 1);
+
+		/*
+								$pdf->Cell(50, $t, 'NIM', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["nim"], $b, 1);
+								$pdf->Cell(50, $t, 'Program Studi', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["program_studi"], $b, 1);
+								$pdf->Cell(50, $t, 'Fakultas', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["fakultas"], $b, 1);
+								$pdf->Cell(0, $t, '', '', 1);
+								$pdf->Cell(50, $t, 'Nama Setoran', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["nama_setoran"], $b, 1);
+								$pdf->Cell(50, $t, 'Periode Akademik', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["periode"], $b, 1);
+								$pdf->Cell(50, $t, 'Nomor Briva', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["briva"], $b, 1);
+								$pdf->Cell(50, $t, 'Tagihan/Setoran/Sisa', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["setoran"], $b, 1);
+								$pdf->Cell(50, $t, 'Tanggal Setoran', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->Cell(0, $t, $dta["tanggal"], $b, 1);
+								$pdf->Cell(50, $t, 'Keterangan', $b, 0);
+								$pdf->Cell(5, $t, ':', $b, 0);
+								// $pdf->MultiCell(0, 5, $dta["keterangan"], $b);
+								*/
+
+		// Line bawah
+		$pdf->Cell(0, 3, '', 'B', 1);
+
+		$pdf->SetAutoPageBreak(false);
+
+		// qrcode
+		$file = "assets/qrcode/kwitansi_" . $id_bri . ".png";
+		// $konten = base_url() . "verifikasi?" . $dta["brivaNo"] . $dta["custCode"];
+		$konten = base_url() . "verifikasi?777771234567890";
+		$level = "L";
+		$size = 5;
+		$padd = 0;
+
+		$this->load->library('qcode');
+		QRcode::png($konten, $file, $level, $size, $padd);
+
+		$pdf->SetY(60);
+		$pdf->SetX(-45);
+		$pdf->Image($file, 165, 60, 25);
+		$pdf->Link(165, 60, 25, 25, $konten);
+		unlink($file);
+		//
+
+
+		// Pernyataan
+		// $dta["notes"] = "Bukti setoran ini tidak membutuhkan tanda tangan karena dibuat secara daring.\n";
+		// $dta["notes"] .= "Link verifikasi: $konten";
+
+		$pdf->SetY(-15);
+		$pdf->SetFont($font, '', 8);
+		// $pdf->MultiCell(0, 3, $dta["notes"], $b, "C");
+
+		$pdf->Output();
+		// $pdf->Output("F", $filename);
+		// redirect($filename);
+
+
+
+
+
+
+	}
