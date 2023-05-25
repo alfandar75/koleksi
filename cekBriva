@@ -1,0 +1,34 @@
+	// Cek akun yang belum terkonfirmasi
+	function index()
+	{
+		$selek[] = "bri.id";
+		$selek[] = "bri.nama AS nama_bri";
+		$selek[] = "DBS_BRIVA(bri.brivaNo, bri.custCode) AS briva";
+		$selek[] = "bri.request";
+		$selek[] = "bri.riwayat";
+		$selek[] = "bri.riwayat2";
+		$selek[] = "bri.trxID AS trx_bri";
+		$selek[] = "rek.trxID AS trx_rek";
+		$selek[] = "rek.nama AS nama_rek";
+		$selek[] = "bri.status_studi";
+
+		$where[] = "bri.trxID Is Null";
+		// $where[] = "bri.request = 'Terkonfirmasi'";
+		$where[] = "bri.request = 'Akun terdaftar'";
+
+		$sql = "SELECT " . join(",", $selek) . " FROM bank AS bri ";
+		$sql .= "LEFT JOIN rekening_koran AS rek ON (rek.custCode = bri.custCode) ";
+		$sql .= "WHERE (" . join(") AND (", $where) . ") ORDER BY riwayat2 DESC";
+		$dta["data"] = $this->mikwa->query($sql)->result_array();
+		$this->load->view("tabel", $dta);
+	}
+
+
+
+	function get_briva()
+	{
+		$post["briva_menu"] = "briva-get";
+		$post["briva"] = "70155-22231-19943";
+		$briapi = json_decode($this->briapi->index($post), true);
+		print_r($briapi);
+	}
