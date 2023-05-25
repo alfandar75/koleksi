@@ -1,3 +1,24 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Test extends CI_Controller
+{
+
+
+	function __construct()
+	{
+		parent::__construct();
+		// $this->load->model("general");
+		$this->load->model("briapi");
+		// $this->load->model("watzap");
+		// $this->load->model("simak");
+		$this->load->model("mikwa");
+		// $this->load->model("simaklokal");
+		$this->load->library('pdf');
+	}
+
+
+
 	// Cek akun yang belum terkonfirmasi
 	function index()
 	{
@@ -12,14 +33,19 @@
 		$selek[] = "rek.nama AS nama_rek";
 		$selek[] = "bri.status_studi";
 
-		$where[] = "bri.trxID Is Null";
-		// $where[] = "bri.request = 'Terkonfirmasi'";
-		$where[] = "bri.request = 'Akun terdaftar'";
+		// $where[] = "bri.trxID Is Null";
+		$where[] = "bri.request = 'Terkonfirmasi'";
+		// $where[] = "bri.request = 'Akun terdaftar'";
 
 		$sql = "SELECT " . join(",", $selek) . " FROM bank AS bri ";
 		$sql .= "LEFT JOIN rekening_koran AS rek ON (rek.custCode = bri.custCode) ";
-		$sql .= "WHERE (" . join(") AND (", $where) . ") ORDER BY riwayat2 DESC";
+		$sql .= "WHERE (" . join(") AND (", $where) . ") ORDER BY riwayat2 DESC LIMIT 10";
 		$dta["data"] = $this->mikwa->query($sql)->result_array();
+
+		foreach ($dta["data"] as $key => $value) {
+			$dta["data"][$key]["briva"] = "<a href='" . base_url() . "test/get_briva/" . $value["briva"] . "' target=_blank>" . $value["briva"] . "</a>";
+		}
+
 		$this->load->view("tabel", $dta);
 	}
 
@@ -27,8 +53,16 @@
 
 	function get_briva()
 	{
-		$post["briva_menu"] = "briva-get";
-		$post["briva"] = "70155-22231-19943";
+		$briva = $this->uri->segment(3);
+
+		$post["briva_menu"] = "briva-get-status";
+		$post["briva"] = $briva;
 		$briapi = json_decode($this->briapi->index($post), true);
 		print_r($briapi);
 	}
+
+
+
+
+
+}
