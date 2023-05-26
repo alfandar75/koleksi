@@ -53,6 +53,37 @@ class Test extends CI_Controller
 	}
 
 
+	function cekGanda()
+	{
+		$strGanda = "SELECT COUNT(custCode) FROM rekening_koran WHERE (custCode = rek.custCode) LIMIT 1";
+
+		$selek[] = "rek.trxID";
+		$selek[] = "rek.custCode";
+		$selek[] = "rek.nama";
+		$selek[] = "rek.keterangan";
+		$selek[] = "rek.amount";
+		$selek[] = "rek.paymentDate";
+		$selek[] = "rek.tellerid";
+		$selek[] = "rek.channel";
+		$selek[] = "rek.catatan";
+		$selek[] = "bri.id AS bank";
+		$selek[] = "bri.nama AS nama_pengguna";
+		$selek[] = "($strGanda) AS cek";
+
+		$where[] = "1";
+		$where[] = "($strGanda) > 1";
+		// $where[] = "bri.id Is Null";
+		// $where[] = "rek.catatan Is Null";
+
+		$sql = "SELECT " . join(",", $selek) . " FROM rekening_koran AS rek ";
+		$sql .= "LEFT JOIN bank AS bri ON (rek.trxID = bri.trxID) ";
+		$sql .= "WHERE (" . join(") AND (", $where) . ") ORDER BY rek.custCode, rek.paymentDate";
+		$dta["data"] = $this->mikwa->query($sql)->result_array();
+
+		$this->load->view("tabel", $dta);
+	}
+
+
 
 	function get_briva()
 	{
