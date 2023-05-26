@@ -22,29 +22,32 @@ class Test extends CI_Controller
 	// Cek akun yang belum terkonfirmasi
 	function index()
 	{
-		$selek[] = "bri.id";
-		$selek[] = "bri.nama AS nama_bri";
-		$selek[] = "DBS_BRIVA(bri.brivaNo, bri.custCode) AS briva";
-		$selek[] = "bri.request";
-		$selek[] = "bri.riwayat";
-		$selek[] = "bri.riwayat2";
-		$selek[] = "bri.trxID AS trx_bri";
-		$selek[] = "rek.trxID AS trx_rek";
-		$selek[] = "rek.nama AS nama_rek";
-		$selek[] = "bri.status_studi";
+		$selek[] = "rek.*";
+		// $selek[] = "bri.id";
+		// $selek[] = "bri.nama AS nama_bri";
+		// $selek[] = "DBS_BRIVA(bri.brivaNo, bri.custCode) AS briva";
+		// $selek[] = "bri.request";
+		// $selek[] = "bri.riwayat";
+		// $selek[] = "bri.riwayat2";
+		// $selek[] = "bri.trxID AS trx_bri";
+		// $selek[] = "rek.trxID AS trx_rek";
+		// $selek[] = "rek.nama AS nama_rek";
+		// $selek[] = "bri.status_studi";
 
 		// $where[] = "bri.trxID Is Null";
-		$where[] = "bri.request = 'Terkonfirmasi'";
+		// $where[] = "bri.request = 'Terkonfirmasi'";
 		// $where[] = "bri.request = 'Akun terdaftar'";
+		$where[] = "bri.id Is Null";
+		$where[] = "rek.catatan Is Null";
 
-		$sql = "SELECT " . join(",", $selek) . " FROM bank AS bri ";
-		$sql .= "LEFT JOIN rekening_koran AS rek ON (rek.custCode = bri.custCode) ";
-		$sql .= "WHERE (" . join(") AND (", $where) . ") ORDER BY riwayat2 DESC LIMIT 10";
+		$sql = "SELECT " . join(",", $selek) . " FROM rekening_koran AS rek ";
+		$sql .= "LEFT JOIN bank AS bri ON (rek.trxID = bri.trxID) ";
+		$sql .= "WHERE (" . join(") AND (", $where) . ") ";
 		$dta["data"] = $this->mikwa->query($sql)->result_array();
 
-		foreach ($dta["data"] as $key => $value) {
-			$dta["data"][$key]["briva"] = "<a href='" . base_url() . "test/get_briva/" . $value["briva"] . "' target=_blank>" . $value["briva"] . "</a>";
-		}
+		// foreach ($dta["data"] as $key => $value) {
+		// 	$dta["data"][$key]["briva"] = "<a href='" . base_url() . "test/get_briva/" . $value["briva"] . "' target=_blank>" . $value["briva"] . "</a>";
+		// }
 
 		$this->load->view("tabel", $dta);
 	}
