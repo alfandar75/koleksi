@@ -1,28 +1,16 @@
-https://iainplk.ac.id/lampiran/update_bank
-
-https://iainplk.ac.id/acc/unggah
-https://alumni.iainplk.ac.id/
-https://iainplk.ac.id/api/
-http://agenda.iainplk.ac.id/
-http://alumni.iainplk.ac.id/
-http://api.iainplk.ac.id/
-http://aplikasi.iainplk.ac.id/
-http://beasiswa-bank-indonesia.iainplk.ac.id/
-http://berkas.iainplk.ac.id/
-http://briva.iainplk.ac.id/
-http://bukuku.iainplk.ac.id/
-http://catatan.iainplk.ac.id/
-http://edukasi.iainplk.ac.id/
-http://kelasukt.iainplk.ac.id/
-http://kip-kuliah.iainplk.ac.id/
-http://layak-fsya.iainplk.ac.id/
-http://lph.iainplk.ac.id/
-http://lulusan.iainplk.ac.id/
-http://mikwa.iainplk.ac.id/
-http://pendaftaran.iainplk.ac.id/
-http://persuratan.iainplk.ac.id/
-http://pmb-pascasarjana.iainplk.ac.id/
-http://registrasi.iainplk.ac.id/
-http://sipak.iainplk.ac.id/
-http://ujianmandiri.iainplk.ac.id/
-http://ver.iainplk.ac.id/
+https://briva2.iainplk.ac.id/
+https://ver.iainplk.ac.id/ belum bisa diakses
+https://api.iainplk.ac.id/ harus ada parameter
+https://agenda.iainplk.ac.id/ sudah tidak bisa diakses
+https://berkas.iainplk.ac.id/ cek, sepertinya tidak ada isinya
+https://persuratan.iainplk.ac.id/ pastikan tidak ada laman
+https://sipak.iainplk.ac.id/ pastikan tidak ada laman
+https://iainplk.ac.id/gantipassword tidak bisa digunakan
+https://iainplk.ac.id/tautan harus ada kepastian format
+https://iainplk.ac.id/teslaman dibuang saja bila perlu
+https://iainplk.ac.id/login sepertinya belum berfungsi
+https://master.iainplk.ac.id/ pastikan fungsinya apa
+https://spmb.iainplk.ac.id/ sepertinya sudah tidak digunakan
+https://presensi.iainplk.ac.id/admin sudah tidak berfungsi
+https://skp.iainplk.ac.id/ sepertinya sudah tidak berfungsi
+https://iainplk.ac.id/musik
